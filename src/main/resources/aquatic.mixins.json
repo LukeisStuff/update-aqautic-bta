@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "luke.aquatic.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ItemToolAxeMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

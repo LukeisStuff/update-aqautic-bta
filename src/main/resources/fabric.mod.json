@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "aquatic",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This mod aims to help new BTA modders.",
+  "name": "Update Aquatic",
+  "description": "Remaking the 1.13 release update of minecraft in BTA!",
   "authors": [
-    "Turnip Labs"
+    "LukeisStuff"
   ],
   "contact": {
     "homepage": "",
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+			"luke.aquatic.AquaticMod"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"luke.aquatic.AquaticMod"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"luke.aquatic.AquaticMod"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+			"luke.aquatic.AquaticRecipes"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+		"aquatic.mixins.json"
   ],
 
   "depends": {
