@@ -4,7 +4,6 @@ import luke.aquatic.blockmodels.BlockModelCoral;
 import luke.aquatic.blockmodels.BlockModelCoralPlant;
 import luke.aquatic.blockmodels.ItemBlockCoral;
 import luke.aquatic.blocks.BlockCoral;
-import luke.aquatic.blocks.BlockCoralPlantFlowing;
 import luke.aquatic.blocks.BlockCoralPlantStill;
 import luke.aquatic.blocks.BlockStrippedLog;
 import net.minecraft.client.render.block.model.BlockModelAxisAligned;
@@ -33,8 +32,7 @@ public class AquaticBlocks {
 	public static Block coralDead;
 	public static Block coralFan;
 	public static Block coralFanDead;
-	public static Block coralPlantStill;
-	public static Block coralPlantFlowing;
+	public static Block coralPlant;
 	public static Block coralPlantDead;
 
 	public static Block kelp;
@@ -106,6 +104,10 @@ public class AquaticBlocks {
 			CreativeHelper.setParent(coral, color - 1, coral, 0);
 		}
 
+		for (int color = 2; color < 6; color++) {
+			CreativeHelper.setParent(coralPlant, color - 1, coralPlant, 0);
+		}
+
 	}
 
 	public void initializeBlocks() {
@@ -150,20 +152,12 @@ public class AquaticBlocks {
 			.setTextures("aquatic:block/coral_dead")
 			.build(new Block("coral.dead", blockID("coralDead"), Material.stone));
 
-		coralPlantStill = coralPlantBuilder
+		coralPlant = coralPlantBuilder
 			.setBlockModel(BlockModelCoralPlant::new)
 			.setItemBlock(block -> new ItemBlockCoral(block, false))
 			.setTicking(true)
 			.setTickOnLoad()
-			.build(new BlockCoralPlantStill("coral.plant.still", blockID("coralPlantStill"), Material.water));
-
-		coralPlantFlowing = coralPlantBuilder
-			.setBlockModel(BlockModelCoralPlant::new)
-			.setItemBlock(block -> new ItemBlockCoral(block, false))
-			.setTicking(true)
-			.setTickOnLoad()
-			.setTags(BlockTags.NOT_IN_CREATIVE_MENU)
-			.build(new BlockCoralPlantFlowing("coral.plant.flowing", blockID("coralPlantFlowing"), Material.water));
+			.build(new BlockCoralPlantStill("coral.plant", blockID("coralPlant"), Material.water));
 
 
 

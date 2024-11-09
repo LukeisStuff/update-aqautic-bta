@@ -32,64 +32,33 @@ public class BlockCoralPlantStill extends BlockFluidStill {
 	private void func_30004_j(World world, int i, int j, int k) {
 		int l = world.getBlockMetadata(i, j, k);
 		world.editingBlocks = true;
-		world.setBlockAndMetadata(i, j, k, AquaticBlocks.coralPlantFlowing.id, l);
+		world.setBlockAndMetadata(i, j, k, this.id - 1, l);
 		world.markBlocksDirty(i, j, k, i, j, k);
-		world.scheduleBlockUpdate(i, j, k, AquaticBlocks.coralPlantFlowing.id, this.tickRate());
+		world.scheduleBlockUpdate(i, j, k, this.id - 1, this.tickRate());
 		world.editingBlocks = false;
 	}
 
-	private void checkForHarden(World world, int x, int y, int z) {
-		int meta;
-		boolean flag;
+	public void checkForHarden(World world, int x, int y, int z) {
+		int data;
 		if (world.getBlockId(x, y, z) != this.id) {
 			return;
 		}
-		if (this.blockMaterial == Material.lava) {
-			flag = world.getBlockMaterial(x, y, z - 1) == Material.water;
-			if (flag || world.getBlockMaterial(x, y, z + 1) == Material.water) {
-				flag = true;
+		if (this.blockMaterial == Material.lava && (world.getBlockMaterial(x, y, z - 1) == Material.water || world.getBlockMaterial(x, y, z + 1) == Material.water || world.getBlockMaterial(x - 1, y, z) == Material.water || world.getBlockMaterial(x + 1, y, z) == Material.water || world.getBlockMaterial(x, y + 1, z) == Material.water)) {
+			data = world.getBlockMetadata(x, y, z) & 0xF;
+			if (data == 0) {
+				world.setBlockWithNotify(x, y, z, Block.obsidian.id);
+			} else if (data <= 2) {
+				world.setBlockWithNotify(x, y, z, Block.cobbleGranite.id);
+			} else if (data <= 4) {
+				world.setBlockWithNotify(x, y, z, Block.cobbleStone.id);
+			} else {
+				world.setBlockWithNotify(x, y, z, Block.cobbleBasalt.id);
 			}
-			if (flag || world.getBlockMaterial(x - 1, y, z) == Material.water) {
-				flag = true;
-			}
-			if (flag || world.getBlockMaterial(x + 1, y, z) == Material.water) {
-				flag = true;
-			}
-			if (flag || world.getBlockMaterial(x, y + 1, z) == Material.water) {
-				flag = true;
-			}
-			if (flag) {
-				meta = world.getBlockMetadata(x, y, z);
-				if (meta == 0) {
-					world.setBlockWithNotify(x, y, z, Block.obsidian.id);
-				} else if (meta <= 2) {
-					world.setBlockWithNotify(x, y, z, Block.cobbleGranite.id);
-				} else if (meta <= 4) {
-					world.setBlockWithNotify(x, y, z, Block.cobbleStone.id);
-				} else {
-					world.setBlockWithNotify(x, y, z, Block.cobbleBasalt.id);
-				}
-				this.fizz(world, x, y, z);
-			}
+			this.fizz(world, x, y, z);
 		}
-		if (this.blockMaterial == Material.water) {
-			flag = world.getBlockMaterial(x, y, z - 1) == Material.lava;
-			if (flag || world.getBlockMaterial(x, y, z + 1) == Material.lava) {
-				flag = true;
-			}
-			if (flag || world.getBlockMaterial(x - 1, y, z) == Material.lava) {
-				flag = true;
-			}
-			if (flag || world.getBlockMaterial(x + 1, y, z) == Material.lava) {
-				flag = true;
-			}
-			if (flag || world.getBlockMaterial(x, y + 1, z) == Material.lava) {
-				flag = true;
-			}
-			if (flag && world.getBlockMetadata(x, y, z) == 0) {
-				world.setBlockWithNotify(x, y, z, Block.cobbleLimestone.id);
-				this.fizz(world, x, y, z);
-			}
+		if (this.blockMaterial == Material.water && (world.getBlockMaterial(x, y, z - 1) == Material.lava || world.getBlockMaterial(x, y, z + 1) == Material.lava || world.getBlockMaterial(x - 1, y, z) == Material.lava || world.getBlockMaterial(x + 1, y, z) == Material.lava || world.getBlockMaterial(x, y + 1, z) == Material.lava) && (data = world.getBlockMetadata(x, y, z) & 0xF) == 0) {
+			world.setBlockWithNotify(x, y, z, Block.cobbleLimestone.id);
+			this.fizz(world, x, y, z);
 		}
 	}
 
@@ -143,7 +112,7 @@ public class BlockCoralPlantStill extends BlockFluidStill {
 		switch (dropCause) {
 			case PICK_BLOCK:
 			case SILK_TOUCH: {
-				return new ItemStack[]{new ItemStack(this)};
+				return new ItemStack[]{new ItemStack(this, meta)};
 			}
 		}
 		return new ItemStack[]{};

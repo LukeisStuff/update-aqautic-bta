@@ -4,7 +4,6 @@ import luke.aquatic.AquaticBlocks;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.block.material.Material;
-import net.minecraft.core.block.tag.BlockTags;
 import net.minecraft.core.enums.EnumDropCause;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.world.World;
@@ -26,20 +25,17 @@ public class BlockCoral extends Block {
 		return ~i & 15;
 	}
 
-	public boolean isWaterNearby(World world, int x, int y, int z, int range) {
-		for (int x1 = x - range; x1 <= x + range; ++x1) {
-			for (int y1 = y - range; y1 <= y + range; ++y1) {
-				for (int z1 = z - range; z1 <= z + range; ++z1) {
-					if (!Block.hasTag(world.getBlockId(x1, y1, z1), BlockTags.IS_WATER)) continue;
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+	public boolean isWaterNearby(World world, int x, int y, int z) {
+        return world.getBlockMaterial(x, y, z - 1) == Material.water ||
+			world.getBlockMaterial(x, y, z + 1) == Material.water ||
+			world.getBlockMaterial(x - 1, y, z) == Material.water ||
+			world.getBlockMaterial(x + 1, y, z) == Material.water ||
+			world.getBlockMaterial(x, y + 1, z) == Material.water ||
+			(world.canBlockBeRainedOn(x, y + 1, z) && world.getCurrentWeather().isPrecipitation);
+    }
 
 	public boolean canBecomeWet(World world, int x, int y, int z) {
-        return this.isWaterNearby(world, x, y, z, 1);
+        return this.isWaterNearby(world, x, y, z);
     }
 
 	@Override
